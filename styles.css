@@ -1,0 +1,394 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Inter', sans-serif;
+
+    /* Light Mode */
+    --bg-color: #f8f9fa;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --accent-color: #007bff;
+    --accent-hover: #0056b3;
+    --nav-bg: #e9ecef;
+    --nav-active-bg: #007bff;
+    --nav-active-text: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --toggle-bg: #e9ecef;
+    --toggle-icon: '🌙'; /* Moon */
+}
+
+body.dark-mode {
+    /* Dark Mode */
+    --bg-color: #1a1a1a;
+    --text-color: #e9ecef;
+    --card-bg: #2c2c2c;
+    --border-color: #444;
+    --accent-color: #0d6efd;
+    --accent-hover: #3d8bfd;
+    --nav-bg: #343a40;
+    --nav-active-bg: #0d6efd;
+    --nav-active-text: #ffffff;
+    --shadow-color: rgba(255, 255, 255, 0.05);
+    --toggle-bg: #495057;
+    --toggle-icon: '☀️'; /* Sun */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-secondary);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding-bottom: 60px; /* Footer space */
+}
+
+/* --- Header --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+header h1 {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+#theme-toggle {
+    background: var(--toggle-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.4rem 0.7rem;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    line-height: 1; /* Ensure icon fits */
+}
+#theme-toggle::before {
+    content: var(--toggle-icon);
+}
+
+#theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* --- Navigation --- */
+#set-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+    background-color: var(--nav-bg);
+    margin-bottom: 1.5rem;
+    transition: background-color 0.3s ease;
+    gap: 0.5rem;
+}
+
+.nav-button {
+    background-color: #ffffff;
+    color: var(--accent-color);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    margin: 0.2rem;
+    position: relative; /* For progress indicator */
+}
+body.dark-mode .nav-button {
+     background-color: var(--card-bg);
+     color: var(--accent-color);
+     border: 1px solid var(--border-color);
+}
+
+
+.nav-button:hover {
+    background-color: var(--accent-hover);
+    color: var(--nav-active-text);
+    transform: translateY(-2px);
+    border-color: var(--accent-hover);
+}
+
+.nav-button.active {
+    background-color: var(--nav-active-bg);
+    color: var(--nav-active-text);
+    font-weight: 500;
+    border-color: var(--nav-active-bg);
+}
+
+.nav-button.viewed::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--text-color); /* Small dot */
+    border-radius: 50%;
+    opacity: 0.6;
+}
+.nav-button.active.viewed::after {
+     background-color: var(--nav-active-text);
+}
+
+
+/* --- Main Content & Controls --- */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+#current-set-title {
+    font-family: var(--font-primary);
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+#recall-button, .pagination button {
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#recall-button:hover, .pagination button:hover:not(:disabled) {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+body.dark-mode .pagination button:disabled {
+     background-color: #555;
+     color: #aaa;
+}
+
+
+/* --- Vocabulary Grid --- */
+.vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.vocab-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    cursor: default; /* Base cursor */
+}
+
+.vocab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px var(--shadow-color);
+}
+
+.vocab-card .word-number {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 0.2rem;
+}
+body.dark-mode .vocab-card .word-number {
+    color: #adb5bd;
+}
+
+.vocab-card h3 {
+    font-family: var(--font-primary);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+}
+
+.vocab-card .meaning {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    flex-grow: 1; /* Allows meaning to take space */
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin 0.3s ease;
+    max-height: 200px; /* Adjust as needed */
+    opacity: 1;
+}
+
+.vocab-card .sentence {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #495057;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin 0.3s ease;
+    max-height: 200px;
+    opacity: 1;
+}
+body.dark-mode .vocab-card .sentence {
+    color: #ced4da;
+}
+
+
+.vocab-card .word-image {
+    width: 100%;
+    height: 150px; /* Fixed height for consistency */
+    object-fit: cover; /* Crop images nicely */
+    border-radius: 5px;
+    margin-top: auto; /* Pushes image to bottom if meaning is short */
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin 0.3s ease;
+    max-height: 150px;
+    opacity: 1;
+    background-color: var(--nav-bg); /* Placeholder bg */
+}
+
+/* --- Recall Mode Styles --- */
+.recall-active .vocab-card {
+    cursor: pointer; /* Indicate clickable */
+}
+
+.recall-active .meaning,
+.recall-active .word-image,
+.recall-active .sentence {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    border: none; /* Hide border collapse issues */
+}
+
+/* Style for revealed elements */
+.recall-active .meaning.visible,
+.recall-active .word-image.visible,
+.recall-active .sentence.visible {
+    opacity: 1;
+    max-height: 200px; /* Or original max-height */
+     margin-bottom: 1rem; /* Restore margin */
+}
+.recall-active .word-image.visible {
+    max-height: 150px;
+    margin-top: auto; /* Restore original margin */
+}
+.recall-active .sentence.visible {
+     margin-top: 0.5rem; /* Restore original margin */
+}
+
+
+/* --- Pagination --- */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+    border-top: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
+}
+body.dark-mode footer {
+     color: #adb5bd;
+}
+
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.2rem;
+    }
+    #set-navigation {
+        padding: 0.5rem;
+        justify-content: flex-start;
+        overflow-x: auto; /* Allow horizontal scroll */
+        white-space: nowrap; /* Prevent wrapping */
+        -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    }
+     .nav-button {
+         padding: 0.4rem 0.7rem;
+         font-size: 0.8rem;
+     }
+
+    .controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+    }
+    #current-set-title {
+         font-size: 1.5rem;
+    }
+     #recall-button, .pagination button {
+         padding: 0.5rem 1rem;
+         font-size: 0.85rem;
+     }
+    .vocab-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+     .vocab-card {
+         padding: 1rem;
+     }
+      .vocab-card h3 {
+        font-size: 1.1rem;
+    }
+     .vocab-card .meaning {
+         font-size: 0.9rem;
+     }
+      .vocab-card .word-image {
+        height: 120px;
+    }
+
+}
+
+@media (max-width: 480px) {
+     header {
+         padding: 0.8rem 1rem;
+     }
+     header h1 {
+        font-size: 1.1rem;
+    }
+    .vocab-grid {
+        grid-template-columns: 1fr; /* Single column */
+    }
+}
